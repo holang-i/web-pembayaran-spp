@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembayaran SPP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 20px;
+        }
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            display: none;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        #receipt {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        #receipt h3 {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Pembayaran SPP</h2>
+
+    <form id="paymentForm">
+        <label for="student_name">Nama Siswa:</label>
+        <input type="text" id="student_name" name="student_name" required>
+
+        <label for="registration_number">Nomor Registrasi:</label>
+        <input type="text" id="registration_number" name="registration_number" required>
+
+        <label for="class">Kelas:</label>
+        <input type="text" id="class" name="class" required>
+
+        <label for="major">Jurusan:</label>
+        <input type="text" id="major" name="major" required>
+
+        <label for="registration_date">Tgl/Bulan:</label>
+        <input type="text" id="registration_date" name="registration_date" required>
+
+        <label for="treasurer_name">Bendahara:</label>
+        <input type="text" id="treasurer_name" name="treasurer_name" required>
+
+        <label for="amount">Bayar:</label>
+        <input type="number" id="amount" name="amount" required>
+
+        <label for="payment_amount">Jumlah Pembayaran :</label>
+        <input type="number" id="payment_amount" name="payment_amount" required>
+
+        <label for="payment_method">Metode Pembayaran:</label>
+        <select id="payment_method" name="payment_method" required>
+            <option value="cash">Tunai</option>
+            <option value="bank_transfer">Transfer Bank</option>
+        </select>
+
+        <button type="button" onclick="calculateTotal()">Bayar</button>
+    </form>
+
+    <div id="result">
+        <h3>Hasil Pembayaran:</h3>
+        <div id="receipt"></div>
+    </div>
+
+    <script>
+        function calculateTotal() {
+            var studentName = document.getElementById('student_name').value;
+            var registrationNumber = document.getElementById('registration_number').value;
+            var studentClass = document.getElementById('class').value;
+            var major = document.getElementById('major').value;
+            var registrationDate = document.getElementById('registration_date').value;
+            var treasurerName = document.getElementById('treasurer_name').value;
+            var amount = parseFloat(document.getElementById('amount').value);
+            var paymentAmount = parseFloat(document.getElementById('payment_amount').value);
+            var paymentMethod = document.getElementById('payment_method').value;
+
+            var resultDiv = document.getElementById('result');
+            var receiptDiv = document.getElementById('receipt');
+
+            if (isNaN(amount) || isNaN(paymentAmount)) {
+                alert('Mohon isi jumlah pembayaran dengan angka yang valid.');
+            } else if (paymentAmount < amount) {
+                alert('Jumlah pembayaran diterima tidak mencukupi.');
+            } else {
+                var change = paymentAmount - amount;
+
+                // Generate a receipt-like structure
+                var receipt = `
+                    <h3>Struk Pembayaran</h3>
+                    <p><strong>Nama Siswa:</strong> ${studentName}</p>
+                    <p><strong>Nomor Registrasi:</strong> ${registrationNumber}</p>
+                    <p><strong>Kelas:</strong> ${studentClass}</p>
+                    <p><strong>Jurusan:</strong> ${major}</p>
+                    <p><strong>Tgl/Bulan:</strong> ${registrationDate}</p>
+                    <p><strong>Bendahara:</strong> ${treasurerName}</p>
+                    <p><strong>Bayar:</strong> Rp ${amount}</p>
+                    <p><strong>Jumlah Pembayaran:</strong> Rp ${paymentAmount}</p>
+                    <p><strong>Kembalian:</strong> Rp ${change}</p>
+                    <p><strong>Metode Pembayaran:</strong> ${paymentMethod}</p>
+                    <p>Terima kasih atas pembayaran Anda!</p>
+                `;
+
+                // Update the receipt div
+                receiptDiv.innerHTML = receipt;
+
+                // Show the result div
+                resultDiv.style.display = 'block';
+            }
+        }
+    </script>
+
+</body>
+</html>
